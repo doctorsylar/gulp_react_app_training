@@ -1,0 +1,7 @@
+$design-layout-width : 1600px;
+@function get-vw($width){
+	@return (($width / $design-layout-width) * 100) +vw;
+}
+//@function get-lap-vw($width){
+//	@return (($width / 1200px) * 100) +vw;
+//}

@@ -1,0 +1,16 @@
+// FONTS
+@import "../fonts/Gilroy/stylesheet.css";
+// VARIABLES
+@import "./variables/module";
+// FUNCTIONS
+@import "./functions/module";
+// NORMALIZE
+@import "./../../node_modules/reset-css/sass/reset";
+// LIBS
+
+// BASE
+@import "./base/module";
+// COMPONENTS
+@import "./components/module";
+// SEPARATED PAGES STYLES
+@import "./pages/home";
