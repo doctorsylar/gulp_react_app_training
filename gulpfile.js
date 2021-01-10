@@ -46,7 +46,7 @@ let path = {
 		fonts: 'src/fonts/**/*.*'
 	},
 	watch: {
-		html: 'src/**/*.html',
+		html: './*.html',
 		js: 'src/js/**/*.js',
 		style: 'src/scss/**/*.scss',
 		img: 'src/img/**/*.*',

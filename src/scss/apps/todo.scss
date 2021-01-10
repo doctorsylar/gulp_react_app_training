@@ -1,0 +1,106 @@
+.todo-app-container {
+  width: 500px;
+  max-width: 100%;
+  position: relative;
+  margin: 1rem auto;
+  box-shadow: 0 13px 40px -5px var(--dark);
+  .todo-header, .todo-row {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    button {
+      text-align: center;
+      color: var(--grey);
+      border: none;
+      background: none;
+      transition: .3s;
+      cursor: pointer;
+      font-size: 22px;
+      &:hover, &.toggled {
+        color: var(--dark);
+      }
+    }
+    .marker-container, .button-container {
+      flex-shrink: 0;
+      text-align: center;
+    }
+    .marker-container {
+      width: 35px;
+    }
+    .button-container {
+      width: 30px;
+      margin-left: auto;
+    }
+    .input-container {
+      flex-grow: 1;
+    }
+    .row-text {
+      width: max-content;
+    }
+  }
+  .toggle-all-container, .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  input, .row-text {
+    font-family: Gilroy, sans-serif;
+    color: var(--dark);
+    width: 100%;
+    border: none;
+    font-size: 1.25rem;
+    padding: 6px 6px 4px;
+  }
+  input::placeholder {
+    color: var(--grey);
+  }
+  .todo-row {
+    .marker-container {
+      button {
+        border: 1px solid var(--grey);
+        border-radius: 100px;
+        color: transparent;
+        padding: 0;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        vertical-align: middle;
+        font-size: 16px;
+        line-height: 14px;
+      }
+    }
+    button {
+      font-size: 13px;
+      line-height: 13px;
+    }
+    .row-text {
+      position: relative;
+      transition: .5s;
+      line-break: anywhere;
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 0;
+        transition: .5s;
+        height: 1px;
+        background-color: var(--grey);
+      }
+    }
+    &.complete {
+      .marker-container {
+        button {
+          color: var(--grey);
+        }
+      }
+      .row-text {
+        color: var(--grey);
+        &:before {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
