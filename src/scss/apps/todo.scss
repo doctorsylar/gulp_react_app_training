@@ -4,7 +4,7 @@
   position: relative;
   margin: 1rem auto;
   box-shadow: 0 13px 40px -5px var(--dark);
-  .todo-header, .todo-row {
+  .todo-header, .todo-row, .todo-footer {
     display: flex;
     align-items: center;
     padding: 4px;
@@ -101,6 +101,52 @@
           width: 100%;
         }
       }
+    }
+  }
+  .todo-footer {
+    position: relative;
+    padding: 20px 16px 12px;
+    justify-content: space-between;
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      height: 3px;
+      width: 98%;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      border: 1px solid var(--grey);
+      border-top-width: 0;
+    }
+    &:after {
+      width: 96%;
+      top: calc(100% + 3px);
+    }
+  }
+  .todo-filters {
+    button {
+      font-size: 12px;
+      padding: 1px 4px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      transition: .3s;
+      &.active {
+        color: var(--dark);
+        border-color: var(--tomato);
+      }
+      &:nth-child(2) {
+        margin: 0 6px;
+      }
+    }
+  }
+  .clear {
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--grey);
+    transition: .3s;
+    &:hover {
+      color: var(--dark);
     }
   }
 }

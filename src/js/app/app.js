@@ -30,7 +30,9 @@ class Header extends React.Component {
         return (
             <div className="todo-header">
                 <div className="toggle-all-container marker-container">
-                    <button type={'button'} className="toggle-all">{'\u2B9F'}</button>
+                    <button
+                        onClick={this.props.markAllTasks}
+                        type={'button'} className={this.props.allMarked ? 'toggled toggle-all' : 'toggle-all'}>{'\u2B9F'}</button>
                 </div>
                 <div className="input-container">
                     <input
@@ -87,10 +89,21 @@ class Body extends React.Component {
     }
 }
 class Footer extends React.Component {
+    changeFilter = (event) => {
+        this.props.changeFilter(event.target.value)
+    }
     render() {
         return (
             <div className="todo-footer">
-
+                <div className="tasks-left">{this.props.tasksLeft} tasks left</div>
+                <div className="todo-filters">
+                    <button onClick={this.changeFilter} className={this.props.activeFilter === 'all' ? 'active' : ''} type={'button'} value={'all'}>All</button>
+                    <button onClick={this.changeFilter} className={this.props.activeFilter === 'active' ? 'active' : ''} type={'button'} value={'active'}>Active</button>
+                    <button onClick={this.changeFilter} className={this.props.activeFilter === 'completed' ? 'active' : ''} type={'button'} value={'completed'}>Completed</button>
+                </div>
+                <div
+                    onClick={this.props.clearCompleted}
+                    className="clear">Clear completed</div>
             </div>
         );
     }
@@ -149,19 +162,81 @@ class TodoApp extends React.Component {
             tasks : tasks
         }, this.saveTasks);
     }
+    markAllTasks = () => {
+        let allMarked = this.state.tasks.length > 0 ? true : false;
+        for (let index in this.state.tasks) {
+            if (!this.state.tasks[index].complete) {
+                allMarked = false;
+                break;
+            }
+        }
+        let tasks = this.state.tasks;
+        if (allMarked) {
+            for (let index in tasks) {
+                tasks[index].complete = false;
+            }
+        }
+        else {
+            for (let index in tasks) {
+                tasks[index].complete = true;
+            }
+        }
+        this.setState({ tasks: tasks })
+    }
+    changeFilter = (filter) => {
+        this.setState({
+            selection : filter
+        });
+    }
+    clearCompleted = () => {
+        let tasks = [];
+        for (let index in this.state.tasks) {
+            if (!this.state.tasks[index].complete) {
+                tasks.push(this.state.tasks[index]);
+            }
+        }
+        this.setState({
+            tasks : tasks
+        }, this.saveTasks);
+    }
+
     render() {
+        let allMarked = this.state.tasks.length > 0 ? true : false;
+        let tasksActive = 0;
+        let tasks = [];
+        for (let index in this.state.tasks) {
+            if (!this.state.tasks[index].complete) {
+                allMarked = false;
+                tasksActive++;
+                if (this.state.selection === 'all' || this.state.selection === 'active') {
+                    tasks.push(this.state.tasks[index]);
+                }
+            }
+            else {
+                if (this.state.selection === 'all' || this.state.selection === 'completed') {
+                    tasks.push(this.state.tasks[index]);
+                }
+            }
+        }
         return (
             <div className="todo-app-container">
                 <Header
+                    allMarked={allMarked}
+                    markAllTasks={this.markAllTasks}
                     addNewTask={this.addNewTask}></Header>
                 { this.state.tasks.length > 0 &&
                     <Body
                     changeTaskStatus={this.changeTaskStatus}
                     removeTask={this.removeTask}
-                    tasks={this.state.tasks}></Body>
+                    tasks={tasks}></Body>
                 }
                 { this.state.tasks.length > 0 &&
-                    <Footer></Footer>
+                    <Footer
+                        changeFilter={this.changeFilter}
+                        tasksLeft={tasksActive}
+                        activeFilter={this.state.selection}
+                        clearCompleted={this.clearCompleted}
+                    ></Footer>
                 }
             </div>
         );
