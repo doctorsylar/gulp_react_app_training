@@ -181,7 +181,8 @@ class TodoApp extends React.Component {
                 tasks[index].complete = true;
             }
         }
-        this.setState({ tasks: tasks })
+        this.setState({ tasks: tasks });
+        this.changeFilter('all');
     }
     changeFilter = (filter) => {
         this.setState({
