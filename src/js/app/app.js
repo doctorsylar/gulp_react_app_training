@@ -101,24 +101,17 @@ class TodoApp extends React.Component {
         super(props);
         this.state = {
             selection : 'all',
-            tasks : [
-                {
-                    id : 1,
-                    text : 'Test Task 1',
-                    complete : false,
-                },
-                {
-                    id : 2,
-                    text : 'Test Task 2',
-                    complete : false,
-                },
-                {
-                    id : 3,
-                    text : 'Test Task 3',
-                    complete : true,
-                },
-            ]
+            tasks : this.props.tasks === null ? [] : this.props.tasks,
         }
+    }
+    saveTasks = () => {
+        if (this.state.tasks.length === 0) {
+            localStorage.removeItem('todoData');
+        }
+        else {
+            localStorage.setItem('todoData', JSON.stringify(this.state.tasks));
+        }
+
     }
     changeTaskStatus = (id) => {
         let tasks = this.state.tasks;
@@ -130,7 +123,7 @@ class TodoApp extends React.Component {
         }
         this.setState({
             tasks : tasks
-        });
+        }, this.saveTasks);
     }
     removeTask = (id) => {
         let tasks = this.state.tasks;
@@ -142,7 +135,7 @@ class TodoApp extends React.Component {
         }
         this.setState({
             tasks : tasks
-        });
+        }, this.saveTasks);
     }
     addNewTask = ( string ) => {
         let tasks = this.state.tasks;
@@ -154,7 +147,7 @@ class TodoApp extends React.Component {
         });
         this.setState({
             tasks : tasks
-        });
+        }, this.saveTasks);
     }
     render() {
         return (
