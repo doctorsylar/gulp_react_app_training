@@ -51,9 +51,16 @@ class Header extends React.Component {
     }
 }
 class Row extends React.Component {
+    editRow = () => {
+        this.props.editRow(this.props.item.id);
+    }
+    finishEditing = (event) => {
+        this.props.finishEditing(this.props.item.id, event.target.value);
+    }
     render() {
         let complete = this.props.item.complete ? 'todo-row complete' : 'todo-row';
         let id = this.props.item.id;
+        let text = this.props.item.text;
         return (
             <div className={ complete }>
                 <div className="marker-container">
@@ -61,9 +68,21 @@ class Row extends React.Component {
                         onClick={() => this.props.changeTaskStatus(id)}
                         type={'button'} className="toggle">{'\u2714'}</button>
                 </div>
-                <div className="row-text">
-                    { this.props.item.text }
+                {this.props.item.editing &&
+                <div className="row-text editing">
+                    <textarea
+                        onBlur={this.finishEditing}
+                        autoFocus={true}
+                        defaultValue={text} />
+
                 </div>
+                }
+                {!this.props.item.editing &&
+                    <div className="row-text"
+                         onClick={this.editRow}>
+                        { this.props.item.text }
+                    </div>
+                }
                 <div className="button-container">
                     <button
                         onClick={() => this.props.removeTask(id)}
@@ -77,6 +96,8 @@ class Body extends React.Component {
     render() {
         let items = this.props.tasks.map((task) =>
             <Row
+                editRow={this.props.editRow}
+                finishEditing={this.props.finishEditing}
                 removeTask={this.props.removeTask}
                 changeTaskStatus={this.props.changeTaskStatus}
                 item={task} key={task.id}></Row>
@@ -156,7 +177,8 @@ class TodoApp extends React.Component {
         tasks.push({
             id : newId,
             text : string,
-            complete : false
+            complete : false,
+            editing : false
         });
         this.setState({
             tasks : tasks
@@ -200,7 +222,31 @@ class TodoApp extends React.Component {
             tasks : tasks
         }, this.saveTasks);
     }
-
+    editRow = (id) => {
+        let tasks = this.state.tasks;
+        for (let index in tasks) {
+            if (this.state.tasks[index].id === id) {
+                this.state.tasks[index].editing = true;
+                break;
+            }
+        }
+        this.setState({
+            tasks : tasks
+        }, this.saveTasks);
+    }
+    finishEditing = (id, text) => {
+        let tasks = this.state.tasks;
+        for (let index in tasks) {
+            if (this.state.tasks[index].id === id) {
+                this.state.tasks[index].text = text;
+                this.state.tasks[index].editing = false;
+                break;
+            }
+        }
+        this.setState({
+            tasks : tasks
+        }, this.saveTasks);
+    }
     render() {
         let allMarked = this.state.tasks.length > 0 ? true : false;
         let tasksActive = 0;
@@ -228,6 +274,8 @@ class TodoApp extends React.Component {
                 { this.state.tasks.length > 0 &&
                     <Body
                     changeTaskStatus={this.changeTaskStatus}
+                    editRow={this.editRow}
+                    finishEditing={this.finishEditing}
                     removeTask={this.removeTask}
                     tasks={tasks}></Body>
                 }

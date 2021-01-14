@@ -74,9 +74,11 @@
       line-height: 13px;
     }
     .row-text {
+      cursor: pointer;
       position: relative;
       transition: .5s;
       line-break: anywhere;
+      white-space: pre-line;
       &:before {
         content: '';
         display: block;
@@ -87,6 +89,13 @@
         transition: .5s;
         height: 1px;
         background-color: var(--grey);
+      }
+      input, textarea {
+        cursor: text;
+        width: 100%;
+      }
+      &.editing {
+        width: 100%;
       }
     }
     &.complete {
