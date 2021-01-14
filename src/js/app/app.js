@@ -238,7 +238,7 @@ class TodoApp extends React.Component {
         let tasks = this.state.tasks;
         for (let index in tasks) {
             if (this.state.tasks[index].id === id) {
-                this.state.tasks[index].text = text;
+                this.state.tasks[index].text = text.trim();
                 this.state.tasks[index].editing = false;
                 break;
             }
